@@ -2,7 +2,7 @@ import os
 from langchain_openai import ChatOpenAI
 from langchain_core.tools import Tool
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.agents import AgentExecutor, create_tool_calling_agent
+from langchain_classic.agents import AgentExecutor, create_tool_calling_agent
 from langchain.memory import ConversationBufferMemory
 
 # Import your custom tools built in Phase 1
@@ -25,7 +25,7 @@ def classify_user_intent(prompt: str) -> str:
 
 def initialize_scamguard_agent():
     """
-    Initializes the modern OpenAI tool-calling agent, memory, and routing tools.
+    Initializes the OpenAI tool-calling agent, memory, and routing tools.
     """
     llm = ChatOpenAI(
         model="gpt-3.5-turbo",
@@ -47,7 +47,7 @@ def initialize_scamguard_agent():
         )
     ]
     
-    # Set up modern prompt template for tool-calling agent
+    # Set up prompt template for tool-calling agent
     prompt = ChatPromptTemplate.from_messages([
         ("system", "You are ScamGuard AI, an adaptive learning companion helping seniors identify financial and social engineering scams safely."),
         MessagesPlaceholder("chat_history"),
@@ -55,7 +55,7 @@ def initialize_scamguard_agent():
         MessagesPlaceholder("agent_scratchpad"),
     ])
     
-    # Build modern tool-calling agent and executor
+    # Build tool-calling agent and executor
     agent = create_tool_calling_agent(llm, tools, prompt)
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
     
