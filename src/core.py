@@ -28,7 +28,7 @@ def initialize_scamguard_agent():
     Initializes the OpenAI tool-calling agent, memory, and routing tools.
     """
     llm = ChatOpenAI(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-mini",
         temperature=0.3,
         openai_api_key=os.getenv("OPENAI_API_KEY")
     )
