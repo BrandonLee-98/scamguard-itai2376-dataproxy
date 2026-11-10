@@ -1,27 +1,26 @@
 import os
 import json
-import requests
+from tavily import TavilyClient
 
 def lookup_scam_database(query: str) -> dict:
     """
-    Queries live Tavily Web Search API targeting FTC/AARP threat intelligence data,
-    with automatic try-except error handling falling back to local JSON scam database.
+    Queries live Tavily Web Search API targeting FTC/AARP threat intelligence data
+    using the official Tavily Python SDK, with automatic fallback to local JSON.
     """
     try:
-        api_key = os.getenv("SEARCH_API_KEY")
+        api_key = os.getenv('SEARCH_API_KEY') or os.getenv("TAVILY_API_KEY")
         if not api_key or api_key == "placeholder":
             raise ValueError("Search API key not configured or is a placeholder.")
             
-        # Direct Tavily API request targeting FTC/AARP advisories
-        response = requests.post(
-            "https://api.tavily.com/search",
-            json={"api_key": api_key, "query": f"FTC AARP scam alert {query}", "max_results": 2}
+        # Initialize official Tavily client matching playground standards
+        client = TavilyClient(api_key=api_key)
+        response = client.search(
+            query=f"FTC AARP scam alert {query}",
+            search_depth="advanced",
+            max_results=2
         )
         
-        if response.status_code != 200:
-            raise Exception(f"API returned status code {response.status_code}")
-            
-        results = response.json().get("results", [])
+        results = response.get("results", [])
         formatted_data = "\n".join([r.get("content", "") for r in results])
         
         return {
