@@ -1,0 +1,28 @@
+{
+  "scams": [
+    {
+      "id": "scam_001",
+      "category": "Tech Support",
+      "keywords": ["popup", "virus", "microsoft", "apple", "locked computer"],
+      "description": "Fake pop-ups claiming your computer has a virus and prompting you to call an unauthorized support number.",
+      "red_flags": ["Demands remote desktop access", "Requests payment via gift cards or crypto", "Creates false urgency"],
+      "safe_action": "Close your browser immediately and do not call the number."
+    },
+    {
+      "id": "scam_002",
+      "category": "Grandchild / Family Emergency",
+      "keywords": ["grandchild", "accident", "jail", "hospital", "bail"],
+      "description": "Imposter scams involving someone posing as a family member or law enforcement demanding immediate wire transfers.",
+      "red_flags": ["Insists on secrecy", "Demands immediate wire transfer or gift cards", "Vague details about identity"],
+      "safe_action": "Hang up and call your family member directly on their known phone number."
+    },
+    {
+      "id": "scam_003",
+      "category": "Government Impersonation (IRS/Social Security)",
+      "keywords": ["irs", "social security", "arrest", "warrant", "suspended ssn"],
+      "description": "Threats of legal arrest or benefit suspension unless immediate payment is submitted.",
+      "red_flags": ["Threatens immediate arrest", "Demands payment over the phone", "Asks for SSN or bank info"],
+      "safe_action": "Hang up. Government agencies never demand immediate payment over the phone or via gift cards."
+    }
+  ]
+}
