@@ -3,7 +3,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.tools import Tool
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_classic.agents import AgentExecutor, create_tool_calling_agent
-from langchain.memory import ConversationBufferMemory
+from langchain_classic.memory import ConversationBufferMemory
 
 # Import your custom tools built in Phase 1
 from src.tools.safety_analyzer import analyze_safety
