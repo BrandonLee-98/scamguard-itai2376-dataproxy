@@ -5,3 +5,7 @@ pydantic>=2.0.0
 python-dotenv>=1.0.0
 requests>=2.31.0
 pytest>=7.0.0
+!echo "streamlit>=1.38.0" >> requirements.txt
+!git add app.py requirements.txt
+!git commit -m "Add senior-accessible Streamlit UI (app.py) with guardrails and adaptive training"
+!git push origin main
