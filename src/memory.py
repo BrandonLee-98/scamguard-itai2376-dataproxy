@@ -17,7 +17,7 @@ class UserSessionState(BaseModel):
             self.successful_identifications += 1
         else:
             self.failed_identifications += 1
-            
+
         # Adaptive difficulty scaling logic
         success_rate = self.successful_identifications / max(1, self.scenarios_completed)
         if success_rate > 0.8 and self.scenarios_completed >= 3:
