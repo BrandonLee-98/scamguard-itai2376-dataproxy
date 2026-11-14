@@ -1,34 +1,44 @@
+from typing import Any, Dict, List
 from pydantic import BaseModel, Field
-from typing import List, Dict
+
 
 class UserSessionState(BaseModel):
-    user_id: str = Field(default="senior_learner_01")
-    current_difficulty: str = Field(default="beginner")
-    scenarios_completed: int = Field(default=0)
-    successful_identifications: int = Field(default=0)
-    failed_identifications: int = Field(default=0)
-    total_hints_used: int = Field(default=0)
-    scenario_history: List[Dict[str, str]] = Field(default_factory=list)
+    """
+    Pydantic-backed session tracker monitoring senior learner progress,
+    score, hint usage, and adaptive difficulty scaling.
+    """
+    current_difficulty: str = "Beginner"
+    score: int = 0
+    total_attempts: int = 0
+    hints_used: int = 0
+    history: List[Dict[str, Any]] = Field(default_factory=list)
 
-    def update_performance(self, passed: bool, hints_used: int):
-        self.scenarios_completed += 1
-        self.total_hints_used += hints_used
+    def update_performance(self, passed: bool, hints_used: int = 0) -> None:
+        """Updates session metrics, logs history, and scales difficulty."""
+        self.total_attempts += 1
+        self.hints_used += hints_used
+
         if passed:
-            self.successful_identifications += 1
-        else:
-            self.failed_identifications += 1
+            self.score += 1
 
-        # Adaptive difficulty scaling logic
-        success_rate = self.successful_identifications / max(1, self.scenarios_completed)
-        if success_rate > 0.8 and self.scenarios_completed >= 3:
-            self.current_difficulty = "intermediate"
-        if success_rate > 0.9 and self.scenarios_completed >= 6:
-            self.current_difficulty = "advanced"
+        self.history.append({
+            "attempt": self.total_attempts,
+            "passed": passed,
+            "hints_used": hints_used,
+            "difficulty": self.current_difficulty
+        })
 
-    def get_summary(self) -> dict:
+        # Adaptive difficulty scaling
+        if self.score >= 3 and self.current_difficulty == "Beginner":
+            self.current_difficulty = "Intermediate"
+        elif self.score >= 6 and self.current_difficulty == "Intermediate":
+            self.current_difficulty = "Advanced"
+
+    def get_summary(self) -> Dict[str, Any]:
+        """Returns standardized session metrics for the simulation runner."""
         return {
             "difficulty": self.current_difficulty,
-            "completed": self.scenarios_completed,
-            "success_rate": f"{(self.successful_identifications / max(1, self.scenarios_completed)) * 100:.1f}%",
-            "hints_used": self.total_hints_used
+            "score": self.score,
+            "attempts": self.total_attempts,
+            "hints_used": self.hints_used
         }
